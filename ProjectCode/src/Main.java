@@ -7,11 +7,11 @@ import java.awt.event.ItemListener;
 import java.io.FileNotFoundException;
 import java.io.File;
 import java.util.Scanner;
-import java.util.HashMap;
+//import java.util.HashMap;
 
 public class Main extends JFrame{
     File rules_file = new File("rules.txt"); // where are rules laying
-    Scanner rules_scanner;
+    
     int rules_count = 10; // count of rules that we have
     int size = 25; // sets the size of a square array
     int[][] startPositions = 	{{10,20},
@@ -25,7 +25,7 @@ public class Main extends JFrame{
     JPanel control_panel;
     JButton start;
     JButton refresh;
-    JComboBox rule; // rule choose box 
+    JComboBox<String> rule; // rule choose box 
     JLabel status;
     JCheckBox old_enable; // enable coloring old cells
     JPanel[][] cells = new JPanel[size][size]; // creates cell array
@@ -91,7 +91,9 @@ public class Main extends JFrame{
         //enable GUI functionality
         init_start();
         init_refresh();
-        init_rule();
+        try{init_rule();}
+        catch(Exception e){}
+        
         init_old_enable();
         init_status();
         //finish configuring GUI
@@ -104,15 +106,16 @@ public class Main extends JFrame{
         new Main();
     }
 
-    public void init_rule(){
-        try {
-            rules_scanner = new Scanner(rules_file);
-        } 
-        catch (FileNotFoundException e){}
+    public void init_rule() throws FileNotFoundException{
+        Scanner rules_scanner = new Scanner(rules_file);
+        //try {
+            
+        //} 
+        //catch (FileNotFoundException e){System.out.println(123235);}
         
         rulesModel = new DefaultComboBoxModel<String>();
 
-        for(int i = 0; rules_scanner.hasNext(); i++){
+        while(rules_scanner.hasNext()){
         	String currrow = rules_scanner.nextLine();  
             rulesModel.addElement(currrow);
         }
@@ -120,6 +123,7 @@ public class Main extends JFrame{
         rule = new JComboBox<String>(rulesModel);
         rule.setToolTipText("Правила");
         control_panel.add(rule);
+        rules_scanner.close();
     }
     
     public void init_start(){

@@ -30,3 +30,27 @@ if(cells[x][y]==1) {
   System.out.print(dead+" ");
 }
 ```
+## Using CellMachine.class
+```
+int size = 50;
+int[][] tst = {{2, 2}, {2, 1}, {2, 3}};
+CellMachine machine = new CellMachine(size, tst);
+
+machine.parseRule("b3/s23/");
+
+for (int i = 0; i < 1; i++) {
+    machine.update_thread();
+    machine.print("X", "V");
+}
+```
+expected output
+
+```
+X X X X X 
+X X X X X 
+X V V V X 
+X X X X X 
+X X X X X 
+
+------------------------
+```

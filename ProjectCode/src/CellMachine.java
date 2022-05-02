@@ -83,13 +83,13 @@ public class CellMachine{
     		cells[i[0]][i[1]]=1;
         }
     }
-    public void printField() {
+    public void printField(String dead, String alive) {
 		for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
             	if(cells[x][y]==1) {
-            		System.out.print("■ ");
+            		System.out.print(alive+" ");
             	} else {
-            		System.out.print("□ ");
+            		System.out.print(dead+" ");
             	}
             	
             }

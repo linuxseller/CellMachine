@@ -7,7 +7,7 @@ import java.awt.event.ItemListener;
 import java.io.FileNotFoundException;
 import java.io.File;
 import java.util.Scanner;
-//import java.util.HashMap;
+
 
 public class Main extends JFrame{
     File rules_file = new File("rules.txt"); // where are rules laying

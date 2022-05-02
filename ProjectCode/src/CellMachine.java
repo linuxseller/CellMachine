@@ -78,8 +78,8 @@ public class CellMachine{
         }
     }
     
-    public void setupField(int[][] arr){
-    	for(int[] i: arr) {
+    public void setupField(int[][] positions){
+    	for(int[] i: positions) {
     		cells[i[0]][i[1]]=1;
         }
     }

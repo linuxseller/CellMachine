@@ -11,9 +11,9 @@ import java.util.Scanner;
 
 public class Main extends JFrame{
     File rules_file = new File("rules.txt"); // where are rules laying
-    
+    Scanner rules_scanner;
     int rules_count = 10; // count of rules that we have
-    int size = 25; // sets the size of a square array
+    int size = 50; // sets the size of a square array
     int[][] startPositions = 	{{10,20},
     						{10,20-1},
 						    {10,20-2},
@@ -67,6 +67,7 @@ public class Main extends JFrame{
             catch (Exception e){}
         }
     };
+
     public Main(){
         main_panel 		= new JPanel();
         frame_panel 	= new JPanel();
@@ -91,8 +92,9 @@ public class Main extends JFrame{
         //enable GUI functionality
         init_start();
         init_refresh();
-        try{init_rule();}
-        catch(Exception e){}
+        
+        init_rule();
+        
         
         init_old_enable();
         init_status();
@@ -102,29 +104,27 @@ public class Main extends JFrame{
         setAlwaysOnTop(true);
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         new Main();
     }
-
-    public void init_rule() throws FileNotFoundException{
-        Scanner rules_scanner = new Scanner(rules_file);
-        //try {
-            
-        //} 
-        //catch (FileNotFoundException e){System.out.println(123235);}
-        
+    
+    public void init_rule(){
         rulesModel = new DefaultComboBoxModel<String>();
-
-        while(rules_scanner.hasNext()){
-        	String currrow = rules_scanner.nextLine();  
-            rulesModel.addElement(currrow);
+        try {
+            rules_scanner = new Scanner(rules_file);
+            while(rules_scanner.hasNext()){
+                String currrow = rules_scanner.nextLine();  
+                rulesModel.addElement(currrow);
+            }
+            rules_scanner.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            rulesModel.addElement("b3/s23/");
         }
-
-        rule = new JComboBox<String>(rulesModel);
-        rule.setToolTipText("Правила");
-        control_panel.add(rule);
-        rules_scanner.close();
-    }
+            rule = new JComboBox<String>(rulesModel);
+            rule.setToolTipText("Правила");
+            control_panel.add(rule);
+        }
     
     public void init_start(){
         start = new JButton("Start");

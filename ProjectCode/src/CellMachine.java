@@ -61,7 +61,7 @@ public class CellMachine{
     }
     
     public void parseRule(String text){
-    	System.out.println(text);
+
         text = text.toLowerCase(Locale.ROOT);
         Matcher matchBorn = Pattern.compile("b.+?/").matcher(text);
         matchBorn.find();

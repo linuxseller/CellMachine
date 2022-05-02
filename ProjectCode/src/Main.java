@@ -10,46 +10,45 @@ import java.util.Scanner;
 import java.util.HashMap;
 
 public class Main extends JFrame{
-    File rules_file = new File("rules.txt");
+    File rules_file = new File("rules.txt"); // where are rules laying
     Scanner rules_scanner;
-    int rules_count=10;
-    CellMashine machine = new CellMashine();
-    JPanel frame_panel; // хранилище данных окна
-    JPanel main_panel; //основное хранилище клеток
+    int rules_count = 10; // count of rules that we have
+    int size = 25; // sets the size of a square array
+    int[][] startPositions = 	{{10,20},
+    						{10,20-1},
+						    {10,20-2},
+						    {10-1,20},
+						    {10-2,20-1}}; // which cells are pre-colored
+    CellMachine machine = new CellMachine(size, startPositions);
+    JPanel frame_panel; // root field
+    JPanel main_panel; //cells field
     JPanel control_panel;
     JButton start;
     JButton refresh;
-    JComboBox rule;
-    JComboBox new_color_choose;
-    JComboBox old_color_choose;
+    JComboBox rule; // rule choose box 
     JLabel status;
-    JCheckBox old_enable;
-    int size=machine.SIZE; // задаёт размер квадратного массива
-    JPanel[][] cells = new JPanel[size][size]; // создание массива клеток
-    private DefaultComboBoxModel<String> rulesModel;
-    private DefaultComboBoxModel<Color> colorModel;
+    JCheckBox old_enable; // enable coloring old cells
+    JPanel[][] cells = new JPanel[size][size]; // creates cell array
+    private DefaultComboBoxModel<String> rulesModel; //
     Thread update;
-    //HashMap<String, Color> colorList = new HashMap<>();
-    //colorList.put("Black");
     
     Color[] colorList = {
-            new Color(0x000000),
-            new Color(0xFFFFFF),
-            new Color(0xAA0000)
+            new Color(0x000000), // black
+            new Color(0xFFFFFF), // white
+            new Color(0xAA0000)  // red 
     };
     final Color fgColorNew = colorList[0];
     final Color fgColorOld = colorList[2];
     final Color bgColor = colorList[1];
-    int gap=0;
-    public String[] elements = new String[rules_count];
-    public boolean flagExecuted = false;
-    boolean old_enabled=false;
+    int gap=0; // net size
+    public boolean flagExecuted = false; // is running stopped
+    boolean old_enabled=false; // is coloring old cells enabled
     Runnable update_field = () ->{
         while(flagExecuted){
             machine.update_thread();
             for(int y = 0; y < size; y++){
                 for (int x = 0; x < size; x++) {
-                    //изменился ли цвет
+                    //check color changes
                 	Color cellColor = cells[x][y].getBackground();
                 	int cellVal = machine.cells[x][y];
                     
@@ -60,6 +59,7 @@ public class Main extends JFrame{
                     }
                 }
             }
+            
             main_panel.revalidate();
             try {
                 Thread.currentThread().sleep(500);
@@ -80,6 +80,7 @@ public class Main extends JFrame{
                 cells[x][y].setBackground(bgColor);
             }
         }
+        //configuring GUI
         setContentPane(frame_panel);
         frame_panel.add(main_panel);
         frame_panel.add(control_panel);
@@ -87,13 +88,13 @@ public class Main extends JFrame{
         main_panel.setLayout(new GridLayout(size, size, gap, gap));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Cell Machine");
-        //включаем функции
-        validate_start();
-        validate_refresh();
-        validate_rule();
-        validate_old_enable();
-        validate_status();
-        //validate_color();
+        //enable GUI functionality
+        init_start();
+        init_refresh();
+        init_rule();
+        init_old_enable();
+        init_status();
+        //finish configuring GUI
         pack();
         setVisible(true);
         setAlwaysOnTop(true);
@@ -103,7 +104,7 @@ public class Main extends JFrame{
         new Main();
     }
 
-    public void validate_rule(){
+    public void init_rule(){
         try {
             rules_scanner = new Scanner(rules_file);
         } 
@@ -113,7 +114,6 @@ public class Main extends JFrame{
 
         for(int i = 0; rules_scanner.hasNext(); i++){
         	String currrow = rules_scanner.nextLine();  
-            elements[i] = currrow;
             rulesModel.addElement(currrow);
         }
 
@@ -122,7 +122,7 @@ public class Main extends JFrame{
         control_panel.add(rule);
     }
     
-    public void validate_start(){
+    public void init_start(){
         start = new JButton("Start");
         control_panel.add(start);
         start.addActionListener(new ActionListener() {
@@ -140,19 +140,8 @@ public class Main extends JFrame{
             }
         });
     }
-
-    public void validate_color(){
-        colorModel = new DefaultComboBoxModel<Color>();
-        for (int i = 0; i < colorList.length; i++){
-            colorModel.addElement(colorList[i]);
-        }
-        new_color_choose = new JComboBox(colorModel);
-        old_color_choose = new JComboBox(colorModel);
-        control_panel.add(new_color_choose);
-        control_panel.add(old_color_choose);
-    }
     
-    public void validate_refresh(){
+    public void init_refresh(){
         refresh = new JButton("Refresh");
         control_panel.add(refresh);
         refresh.addActionListener(new ActionListener() {
@@ -162,17 +151,13 @@ public class Main extends JFrame{
                 old_enable.setEnabled(true);
                 status.setText("Status: paused.");
                 machine.clearField();
-                machine.setupField();
+                machine.setupField(startPositions);
                 flagExecuted = false;
-                //******************
-                //
-                //stop update thread
-                //******************
             }
         });
     }
     
-    public void validate_old_enable(){
+    public void init_old_enable(){
         old_enable = new JCheckBox("Color old");
         control_panel.add(old_enable);
         old_enable.addItemListener(new ItemListener() {
@@ -182,7 +167,7 @@ public class Main extends JFrame{
         });
     }
     
-    public void validate_status(){
+    public void init_status(){
         status = new JLabel();
         control_panel.add(status);
     }

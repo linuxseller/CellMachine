@@ -85,6 +85,7 @@ public class Main extends JFrame{
         setContentPane(frame_panel);
         frame_panel.add(main_panel);
         frame_panel.add(control_panel);
+        frame_panel.setLayout(new GridLayout(1,2,3,3));
         control_panel.setLayout(new GridLayout(15,1,3,3));
         main_panel.setLayout(new GridLayout(size, size, gap, gap));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -118,7 +119,6 @@ public class Main extends JFrame{
             }
             rules_scanner.close();
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             rulesModel.addElement("b3/s23/");
         }
             rule = new JComboBox<String>(rulesModel);

@@ -62,7 +62,7 @@ public class Main extends JFrame{
             
             main_panel.revalidate();
             try {
-                Thread.currentThread().sleep(500);
+                Thread.currentThread().sleep(750);
             }
             catch (Exception e){}
         }

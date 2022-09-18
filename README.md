@@ -7,7 +7,7 @@ CellMachine machine = new CellMachine(sizeOfSquare, startPositions);
 ```
 startPositions is multidimensional array type - `{{x1,y1},{x2,y2},{x3,y3}...{xn,yn}}`
 ### Methods
-```
+```java
 update_thread()                       // updates field according to rules
 parseRule(String text)                // parses rule  "b..../s..../"
 clearField()                          // fills field with 0
@@ -17,13 +17,13 @@ printField(String dead, String alive) // prints field (0->dead, 1->alive)
 ### More about methods
 some important info anoit method filling
 setsetupField()
-```
+```java
 for(int[] i: positions) {
     cells[i[0]][i[1]]=1;
 }
 ```
 printField()
-```
+```java
 if(cells[x][y]==1) {
   System.out.print(alive+" ");
 } else {
@@ -31,7 +31,7 @@ if(cells[x][y]==1) {
 }
 ```
 ## Using CellMachine.class
-```
+```java
 int size = 50;
 int[][] tst = {{2, 2}, {2, 1}, {2, 3}};
 CellMachine machine = new CellMachine(size, tst);
@@ -45,7 +45,7 @@ for (int i = 0; i < 1; i++) {
 ```
 expected output
 
-```
+```java
 X X X X X 
 X X X X X 
 X V V V X 
